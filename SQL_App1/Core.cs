@@ -36,6 +36,8 @@ namespace SQL_App1
                         Environment.Exit(0);
                         break;
                 }
+
+                Console.ReadLine();
             } while (userInput != 0);
         }
 

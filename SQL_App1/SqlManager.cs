@@ -90,9 +90,6 @@ namespace SQL_App1
                     Console.WriteLine(ex.Message);
 
                 }
-
-                Console.ReadLine();
-
             }
         }
 
@@ -158,9 +155,6 @@ namespace SQL_App1
                 if (i == 0) Console.WriteLine();
             }
             connection.Close();
-            Console.ReadKey();
-
-
         }
 
         public void GetUsers()
@@ -189,12 +183,6 @@ namespace SQL_App1
                 }
                 reader.Close();
             }
-
-            Console.ReadLine();
         }
-
-
-
-
     }
 }
