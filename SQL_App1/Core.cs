@@ -14,19 +14,23 @@ namespace SQL_App1
             do
             {
                 userInput = DrawMenu();
+                SqlManager manager = new SqlManager();
                 switch (userInput)
                 {
                     case 1:
-                        RegisterNewUser();
+                        RegisterNewUser(manager);
                         break;
                     case 2:
-                        PrintTable();
+                        PrintTable(manager);
                         break;
                     case 3:
-                        Transaction();
+                        Transaction(manager);
                         break;
                     case 4:
-                        DataSet();
+                        DataSet(manager);
+                        break;
+                    case 5:
+                        GetUsers(manager);
                         break;
                     default:
                         Environment.Exit(0);
@@ -35,34 +39,36 @@ namespace SQL_App1
             } while (userInput != 0);
         }
 
-        private static void RegisterNewUser()
+        private static void RegisterNewUser(SqlManager manager)
         {
             string username = GetInput("Username");
             string password = GetInput("Password");
 
-            SqlManager databaseSqlManager = new SqlManager();
-            int userID = databaseSqlManager.RegisterUser(username, password);
+            int userID = manager.RegisterUser(username, password);
             Console.WriteLine($"Registered user ID: {userID}");
             Console.ReadLine();
         }
 
-        private static void PrintTable()
+        private static void PrintTable(SqlManager manager)
         {
             string tableName = GetInput("Table name");
-            SqlManager sqlDatabaseManager = new SqlManager();
-            sqlDatabaseManager.printTable(tableName);
+
+            manager.printTable(tableName);
         }
 
-        private static void Transaction()
+        private static void Transaction(SqlManager manager)
         {
-            SqlManager manager = new SqlManager();
             manager.Transaction();
         }
 
-        private static void DataSet()
+        private static void DataSet(SqlManager manager)
         {
-            SqlManager manager = new SqlManager();
             manager.DataSet();
+        }
+
+        private static void GetUsers(SqlManager manager)
+        {
+            manager.GetUsers();
         }
 
         public static string GetInput(string inputName)
@@ -79,6 +85,7 @@ namespace SQL_App1
             Console.WriteLine("2. Print table by Name");
             Console.WriteLine("3. Transaction");
             Console.WriteLine("4. DataSet");
+            Console.WriteLine("5. DataReader (getUsers)");
             Console.WriteLine("0. EXIT");
             var result = Console.ReadLine();
             return Convert.ToInt32(result);

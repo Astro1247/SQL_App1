@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,14 +7,14 @@ namespace SQL_App1
 {
     class SqlManager
     {
-        private static string connString =
-                "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=testingbd;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        //private static string connString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Astro\\Source\\Repos\\SQL_App1\\SQL_App1\\testingbd.mdf;Integrated Security=True";
+        private static readonly string ConnString = ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
 
         public int RegisterUser(string username, string password)
         {
             //SqlConnection connection = new SqlConnection(connString);
             string sqlExpression = "RegisterUser";
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(ConnString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
@@ -21,7 +22,7 @@ namespace SQL_App1
                 SqlParameter usernameParam = new SqlParameter
                 {
                     ParameterName = "@Username",
-                    Value = password
+                    Value = username
                 };
                 command.Parameters.Add(usernameParam);
                 SqlParameter passParam = new SqlParameter
@@ -44,7 +45,7 @@ namespace SQL_App1
         {
 
             string sqlExpression = "SELECT * FROM " + tableName;
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(ConnString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
@@ -90,12 +91,14 @@ namespace SQL_App1
 
                 }
 
+                Console.ReadLine();
+
             }
         }
 
         public void Transaction()
         {
-            SqlConnection connection = new SqlConnection(connString);
+            SqlConnection connection = new SqlConnection(ConnString);
             connection.Open();
             SqlTransaction transaction = connection.BeginTransaction();
             SqlCommand cmd = connection.CreateCommand();
@@ -125,7 +128,7 @@ namespace SQL_App1
         public void DataSet()
         {
             int i;
-            SqlConnection connection = new SqlConnection(connString);
+            SqlConnection connection = new SqlConnection(ConnString);
             connection.Open();
 
             SqlCommand cmd1 = new SqlCommand("SELECT * FROM accounts", connection);
@@ -137,15 +140,15 @@ namespace SQL_App1
             adapter1.Fill(data, "accounts");
             adapter2.Fill(data, "Keys");
 
-            data.Relations.Add("vs", data.Tables["accounts"].Columns["Id"], data.Tables["Keys"].Columns["Id"]);
+            data.Relations.Add("vs", data.Tables["accounts"].Columns["Id"], data.Tables["Keys"].Columns["ownerId"]);
             Console.Write("{0,-20}", "Id");
-            Console.Write("{0,-20}", "Key");
-            Console.WriteLine("{0,-20}", "Username");
-            foreach (DataRow custRow in data.Tables["Keys"].Rows)
+            Console.Write("{0,-20}", "Username");
+            Console.WriteLine("{0,-20}", "Key ID");
+            foreach (DataRow custRow in data.Tables["accounts"].Rows)
             {
                 i = 0;
                 Console.Write("{0,-20}", custRow["Id"]);
-                Console.Write("{0,-20}", custRow["key"]);
+                Console.Write("{0,-20}", custRow["username"]);
 
                 foreach (DataRow orderRow in custRow.GetChildRows("vs"))
                 {
@@ -159,6 +162,37 @@ namespace SQL_App1
 
 
         }
+
+        public void GetUsers()
+        {
+            // название процедуры
+            string sqlExpression = "GetUsers";
+            // string connectionString = ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                SqlCommand sqlCmd = new SqlCommand(sqlExpression, conn);
+                // указываем, что команда представляет хранимую процедуру
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = sqlCmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}", reader.GetName(0), reader.GetName(1), reader.GetName(2));
+                    while (reader.Read())
+                    {
+                        int ID = reader.GetInt32(0);
+                        string username = reader.GetString(1);
+                        string pass = reader.GetString(2);
+                        Console.WriteLine("{0}\t{1}\t{2}", ID, username, pass);
+                    }
+                }
+                reader.Close();
+            }
+
+            Console.ReadLine();
+        }
+
 
 
 
