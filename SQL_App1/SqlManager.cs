@@ -141,13 +141,13 @@ namespace SQL_App1
             Console.Write("{0,-20}", "Id");
             Console.Write("{0,-20}", "Username");
             Console.WriteLine("{0,-20}", "Key ID");
-            foreach (DataRow custRow in data.Tables["accounts"].Rows)
+            foreach (DataRow row in data.Tables["accounts"].Rows)
             {
                 i = 0;
-                Console.Write("{0,-20}", custRow["Id"]);
-                Console.Write("{0,-20}", custRow["username"]);
+                Console.Write("{0,-20}", row["Id"]);
+                Console.Write("{0,-20}", row["username"]);
 
-                foreach (DataRow orderRow in custRow.GetChildRows("vs"))
+                foreach (DataRow orderRow in row.GetChildRows("vs"))
                 {
                     Console.WriteLine("{0,-20}", orderRow["Id"]);
                     i++;
