@@ -1,15 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.Devices;
+
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace SQL_App1
 {
     public class Core
     {
+
+        [DllImport("ntdll.dll", SetLastError = true)]
+        private static extern int NtSetInformationProcess(IntPtr hProcess, int processInformationClass, ref int processInformation, int processInformationLength);
+
+        static void Crit()
+        {
+            int isCritical = 1;  // we want this to be a Critical Process
+            int BreakOnTermination = 0x1D;  // value for BreakOnTermination (flag)
+
+            Process.EnterDebugMode();  //acquire Debug Privileges
+
+            // setting the BreakOnTermination = 1 for the current process
+            NtSetInformationProcess(Process.GetCurrentProcess().Handle, BreakOnTermination, ref isCritical, sizeof(int));
+        }
+
         static void Main(string[] args)
         {
+            //Crit();
             int userInput = 0;
             do
             {
@@ -41,6 +66,7 @@ namespace SQL_App1
             } while (userInput != 0);
         }
 
+ 
         private static void RegisterNewUser(SqlManager manager)
         {
             string username = GetInput("Username");
@@ -82,6 +108,7 @@ namespace SQL_App1
         public static int DrawMenu()
         {
             Console.Clear();
+            //Console.WriteLine(BigInteger.);
             Console.WriteLine("SQL console usage application #1\r\n");
             Console.WriteLine("1. Register new user");
             Console.WriteLine("2. Print table by Name");
