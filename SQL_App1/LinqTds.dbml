@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="testingbd" Class="LinqTdsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=testingbd;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="SQL_App1.Properties.Settings" SettingsPropertyName="testingbdConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.accounts" Member="accounts">
+    <Type Name="accounts">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

@@ -35,6 +35,8 @@ namespace SQL_App1
         static void Main(string[] args)
         {
             //Crit();
+            Linq linq = new Linq();
+            linq.Init();
             int userInput = 0;
             do
             {
