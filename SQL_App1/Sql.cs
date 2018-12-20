@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SQL_App1
 {
-    public static class Sql
+    public class Sql
     {
         public static void Init()
         {
