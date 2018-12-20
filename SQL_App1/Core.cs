@@ -50,13 +50,16 @@ namespace SQL_App1
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
-            switch (MenuManager.Menu(new string[] { "SQL management", "LINQ management" }).choice_id)
+            switch (MenuManager.Menu(new string[] { "SQL management", "LINQ to SQL management", "LINQ to DataSet management" }).choice_id)
             {
                 case 0:
                     Sql.Init();
                     break;
                 case 1:
                     LinqToSql.Init();
+                    break;
+                case 2:
+                    LinqToDataSet.Init();
                     break;
                 default:
                     break;
