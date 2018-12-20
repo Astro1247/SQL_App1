@@ -81,11 +81,11 @@ namespace SQL_App1
             DispTable(result);
         }
 
-        private static void DispTable(OrderedEnumerableRowCollection<DataRow> query)
+        private static void DispTable(OrderedEnumerableRowCollection<DataRow> list)
         {
-            foreach (var item in query)
+            foreach (var item in list)
             {
-                Console.WriteLine("{0,-15} \t{1,-15} \t{2,-15}", item.Field<Int32>("№Товара"), item.Field<Int32>("Название"), item.Field<String>("Цена"));
+                Console.WriteLine("{0,-15} \t{1,-15} \t{2,-15}", item.Field<Int32>("Id"), item.Field<Int32>("ownerId"), item.Field<String>("key"));
 
             }
         }
