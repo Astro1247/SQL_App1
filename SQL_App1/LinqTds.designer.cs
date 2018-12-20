@@ -30,12 +30,15 @@ namespace SQL_App1
 		
     #region Определения метода расширяемости
     partial void OnCreated();
-    partial void Insertchats(chats instance);
-    partial void Updatechats(chats instance);
-    partial void Deletechats(chats instance);
     partial void Insertmessages(messages instance);
     partial void Updatemessages(messages instance);
     partial void Deletemessages(messages instance);
+    partial void InsertKeys(Keys instance);
+    partial void UpdateKeys(Keys instance);
+    partial void DeleteKeys(Keys instance);
+    partial void Insertchats(chats instance);
+    partial void Updatechats(chats instance);
+    partial void Deletechats(chats instance);
     partial void Insertaccounts(accounts instance);
     partial void Updateaccounts(accounts instance);
     partial void Deleteaccounts(accounts instance);
@@ -71,14 +74,6 @@ namespace SQL_App1
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<chats> chats
-		{
-			get
-			{
-				return this.GetTable<chats>();
-			}
-		}
-		
 		public System.Data.Linq.Table<messages> messages
 		{
 			get
@@ -87,11 +82,271 @@ namespace SQL_App1
 			}
 		}
 		
+		public System.Data.Linq.Table<Keys> Keys
+		{
+			get
+			{
+				return this.GetTable<Keys>();
+			}
+		}
+		
+		public System.Data.Linq.Table<chats> chats
+		{
+			get
+			{
+				return this.GetTable<chats>();
+			}
+		}
+		
 		public System.Data.Linq.Table<accounts> accounts
 		{
 			get
 			{
 				return this.GetTable<accounts>();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.messages")]
+	public partial class messages : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _sender;
+		
+		private int _chatId;
+		
+		private string _message;
+		
+    #region Определения метода расширяемости
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnsenderChanging(int value);
+    partial void OnsenderChanged();
+    partial void OnchatIdChanging(int value);
+    partial void OnchatIdChanged();
+    partial void OnmessageChanging(string value);
+    partial void OnmessageChanged();
+    #endregion
+		
+		public messages()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sender", DbType="Int NOT NULL")]
+		public int sender
+		{
+			get
+			{
+				return this._sender;
+			}
+			set
+			{
+				if ((this._sender != value))
+				{
+					this.OnsenderChanging(value);
+					this.SendPropertyChanging();
+					this._sender = value;
+					this.SendPropertyChanged("sender");
+					this.OnsenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chatId", DbType="Int NOT NULL")]
+		public int chatId
+		{
+			get
+			{
+				return this._chatId;
+			}
+			set
+			{
+				if ((this._chatId != value))
+				{
+					this.OnchatIdChanging(value);
+					this.SendPropertyChanging();
+					this._chatId = value;
+					this.SendPropertyChanged("chatId");
+					this.OnchatIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_message", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string message
+		{
+			get
+			{
+				return this._message;
+			}
+			set
+			{
+				if ((this._message != value))
+				{
+					this.OnmessageChanging(value);
+					this.SendPropertyChanging();
+					this._message = value;
+					this.SendPropertyChanged("message");
+					this.OnmessageChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Keys")]
+	public partial class Keys : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _ownerId;
+		
+		private string _key;
+		
+    #region Определения метода расширяемости
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnownerIdChanging(int value);
+    partial void OnownerIdChanged();
+    partial void OnkeyChanging(string value);
+    partial void OnkeyChanged();
+    #endregion
+		
+		public Keys()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ownerId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ownerId
+		{
+			get
+			{
+				return this._ownerId;
+			}
+			set
+			{
+				if ((this._ownerId != value))
+				{
+					this.OnownerIdChanging(value);
+					this.SendPropertyChanging();
+					this._ownerId = value;
+					this.SendPropertyChanged("ownerId");
+					this.OnownerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[key]", Storage="_key", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string key
+		{
+			get
+			{
+				return this._key;
+			}
+			set
+			{
+				if ((this._key != value))
+				{
+					this.OnkeyChanging(value);
+					this.SendPropertyChanging();
+					this._key = value;
+					this.SendPropertyChanged("key");
+					this.OnkeyChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -205,140 +460,6 @@ namespace SQL_App1
 					this._messagesCount = value;
 					this.SendPropertyChanged("messagesCount");
 					this.OnmessagesCountChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.messages")]
-	public partial class messages : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _sender;
-		
-		private int _chatId;
-		
-		private int _message;
-		
-    #region Определения метода расширяемости
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnsenderChanging(int value);
-    partial void OnsenderChanged();
-    partial void OnchatIdChanging(int value);
-    partial void OnchatIdChanged();
-    partial void OnmessageChanging(int value);
-    partial void OnmessageChanged();
-    #endregion
-		
-		public messages()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sender", DbType="Int NOT NULL")]
-		public int sender
-		{
-			get
-			{
-				return this._sender;
-			}
-			set
-			{
-				if ((this._sender != value))
-				{
-					this.OnsenderChanging(value);
-					this.SendPropertyChanging();
-					this._sender = value;
-					this.SendPropertyChanged("sender");
-					this.OnsenderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_chatId", DbType="Int NOT NULL")]
-		public int chatId
-		{
-			get
-			{
-				return this._chatId;
-			}
-			set
-			{
-				if ((this._chatId != value))
-				{
-					this.OnchatIdChanging(value);
-					this.SendPropertyChanging();
-					this._chatId = value;
-					this.SendPropertyChanged("chatId");
-					this.OnchatIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_message", DbType="Int NOT NULL")]
-		public int message
-		{
-			get
-			{
-				return this._message;
-			}
-			set
-			{
-				if ((this._message != value))
-				{
-					this.OnmessageChanging(value);
-					this.SendPropertyChanging();
-					this._message = value;
-					this.SendPropertyChanged("message");
-					this.OnmessageChanged();
 				}
 			}
 		}

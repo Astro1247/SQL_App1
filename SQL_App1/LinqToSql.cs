@@ -50,7 +50,7 @@ namespace SQL_App1
 
         private static void Menu()
         {
-            MenuChoice MainMenu = MenuManager.Menu(new string[] {"Create new chat", "Print \"accounts\" table", "Exit"}, "Messenger example usage Linq to Sql");
+            MenuChoice MainMenu = MenuManager.Menu(new string[] {"Create new chat", "Print \"accounts\" table", "Transaction", "Exit"}, "Messenger example usage Linq to Sql");
             while (MainMenu.choice != "Exit")
             {
                 switch (MainMenu.choice)
@@ -60,6 +60,9 @@ namespace SQL_App1
                         break;
                     case "Print \"accounts\" table":
                         DispAccountsTable();
+                        break;
+                    case "Transaction":
+                        Transaction();
                         break;
                     default:
                         break;
@@ -127,6 +130,38 @@ namespace SQL_App1
 
         }
 
+        private static void Transaction()
+        {
+            LinqTdsDataContext dt = new LinqTdsDataContext(ConnString);
+
+            try
+            {
+                int sender = SelectUser("Please select message sender");
+                int chatid = SelectChat("Please select chat to send message");
+                string message = Core.GetInput("Message");
+
+                db.GetTable<messages>().InsertOnSubmit(new messages() { sender = sender, chatId = chatid, message = message });
+                db.GetTable<messages>().InsertOnSubmit(new messages() { sender = sender, chatId = chatid, message = message + " _additional" });
+                
+                db.SubmitChanges(ConflictMode.ContinueOnConflict);
+                MenuManager.Menu(new string[] { "Go back" }, "Transaction successful!");
+            }
+            catch (ChangeConflictException)
+            {
+                db.ChangeConflicts.ResolveAll(RefreshMode.OverwriteCurrentValues);
+                Console.WriteLine("Conflict");
+                Console.ReadKey(true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                foreach (ObjectChangeConflict item in db.ChangeConflicts)
+                {
+                    item.Resolve(RefreshMode.KeepCurrentValues);
+                }
+            }
+        }
+
         private static int SelectUser(string menuTitle)
         {
             Table<accounts> accs = db.GetTable<accounts>();
@@ -143,5 +178,30 @@ namespace SQL_App1
                 select a;
             return id.ToList().FirstOrDefault().Id;
         }
+
+        private static int SelectChat(string menuTitle)
+        {
+            Table<chats> accs = db.GetTable<chats>();
+            List<string> chatIdsList = new List<string>();
+            foreach (var item in accs)
+            {
+                chatIdsList.Add(item.Id.ToString());
+            }
+
+            string[] chatIds = chatIdsList.ToArray();
+            var menu = MenuManager.Menu(chatIds, menuTitle);
+            IQueryable<accounts> id = from a in db.accounts
+                where a.username == menu.choice
+                select a;
+            return id.ToList().FirstOrDefault().Id;
+        }
+    }
+
+    public class MessageEntity
+    {
+        public int id = -1;
+        public int sender;
+        public int chatId;
+        public string message;
     }
 }
