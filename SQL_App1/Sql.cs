@@ -47,7 +47,7 @@ namespace SQL_App1
                 }
 
                 Console.ReadLine();
-            } while (userInput != 0);
+            } while (userInput != -1);
         }
 
         private static void RegisterNewUser(SqlManager manager)
@@ -57,14 +57,15 @@ namespace SQL_App1
 
             int userID = manager.RegisterUser(username, password);
             Console.WriteLine($"Registered user ID: {userID}");
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void PrintTable(SqlManager manager)
         {
-            string tableName = Core.GetInput("Table name");
+            //string tableName = Core.GetInput("Table name");
 
-            manager.printTable(tableName);
+            //manager.printTable(tableName);
+            manager.printTable(MenuManager.Menu(new string[] {"accounts", "Keys"}, "Choose table").choice);
         }
 
         private static void Transaction(SqlManager manager)

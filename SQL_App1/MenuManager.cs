@@ -8,12 +8,16 @@ namespace SQL_App1
 {
     public static class MenuManager
     {
-        public static MenuChoice Menu(string[] choices, string title = "")
+        public static MenuChoice Menu(string[] choices, string title = "Make your choice")
         {
             var mc = new MenuChoice();
             mc.choices = choices;
-            Console.WriteLine(title);
             Console.Clear();
+            for (int i = 0; i < choices.Length+1; i++)
+            {
+                Console.Write("\r\n");
+            }
+            Console.WriteLine(title.DrawInConsoleBox());
             //var menu = new Menu(new string[] { "John", "Bill", "Janusz", "Grażyna", "1500", ":)" });
             var menu = new MenuClass(choices);
             var menuPainter = new ConsoleMenuPainter(menu);
@@ -47,6 +51,9 @@ namespace SQL_App1
             Console.ForegroundColor = ConsoleColor.Cyan;
             //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
             //Console.ReadKey();
+            
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
             //return menu.SelectedOption;
             return mc;

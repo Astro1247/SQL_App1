@@ -17,7 +17,7 @@ namespace SQL_App1
 {
 
 
-    public class Core
+    public static class Core
     {
 
         #region Crit
@@ -40,8 +40,7 @@ namespace SQL_App1
 
         static void Main(string[] args)
         {
-
-            switch (Menu(new string[] { "SQL management", "LINQ management" }).choice_id)
+            switch (MenuManager.Menu(new string[] { "SQL management", "LINQ management" }).choice_id)
             {
                 case 0:
                     Sql.Init();
@@ -55,55 +54,72 @@ namespace SQL_App1
             //linq.Init();
         }
 
+        public static string DrawInConsoleBox(this string s)
+        {
+            string ulCorner = "╔";
+            string llCorner = "╚";
+            string urCorner = "╗";
+            string lrCorner = "╝";
+            string vertical = "║";
+            string horizontal = "═";
+
+            string[] lines = s.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+            int longest = 0;
+            foreach (string line in lines)
+            {
+                if (line.Length > longest)
+                    longest = line.Length;
+            }
+            int width = longest + 2; // 1 space on each side
+
+
+            string h = string.Empty;
+            for (int i = 0; i < width; i++)
+                h += horizontal;
+
+            // box top
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(ulCorner + h + urCorner);
+
+            // box contents
+            foreach (string line in lines)
+            {
+                double dblSpaces = (((double)width - (double)line.Length) / (double)2);
+                int iSpaces = Convert.ToInt32(dblSpaces);
+
+                if (dblSpaces > iSpaces) // not an even amount of chars
+                {
+                    iSpaces += 1; // round up to next whole number
+                }
+
+                string beginSpacing = "";
+                string endSpacing = "";
+                for (int i = 0; i < iSpaces; i++)
+                {
+                    beginSpacing += " ";
+
+                    if (!(iSpaces > dblSpaces && i == iSpaces - 1)) // if there is an extra space somewhere, it should be in the beginning
+                    {
+                        endSpacing += " ";
+                    }
+                }
+                // add the text line to the box
+                sb.AppendLine(vertical + beginSpacing + line + endSpacing + vertical);
+            }
+
+            // box bottom
+            sb.AppendLine(llCorner + h + lrCorner);
+
+            // the finished box
+            return sb.ToString();
+        }
+
         public static string GetInput(string inputName)
         {
             Console.Write($"{inputName}: ");
             return Console.ReadLine();
-        }
-
-
-        private static MenuChoice Menu(string[] choices, string title = "")
-        {
-            MenuChoice mc = new MenuChoice();
-            mc.choices = choices;
-            Console.WriteLine(title);
-            Console.Clear();
-            //var menu = new Menu(new string[] { "John", "Bill", "Janusz", "Grażyna", "1500", ":)" });
-            var menu = new MenuClass(choices);
-            var menuPainter = new ConsoleMenuPainter(menu);
-
-            bool done = false;
-
-            do
-            {
-                menuPainter.Paint(0, 0);
-
-                var keyInfo = Console.ReadKey();
-
-                switch (keyInfo.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                        menu.MoveUp();
-                        break;
-                    case ConsoleKey.DownArrow:
-                        menu.MoveDown();
-                        break;
-                    case ConsoleKey.Enter:
-                        done = true;
-                        break;
-                }
-            } while (!done);
-
-            mc.choice_id = menu.SelectedIndex;
-            mc.choice = menu.SelectedOption;
-            mc.used = true;
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
-            //Console.ReadKey();
-            Console.Clear();
-            //return menu.SelectedOption;
-            return mc;
         }
     }
 }
