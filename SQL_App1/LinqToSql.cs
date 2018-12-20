@@ -68,6 +68,7 @@ namespace SQL_App1
                         break;
                 }
 
+                Console.ReadKey(true);
                 MenuManager.Menu(MainMenu);
             }
         }
@@ -190,8 +191,8 @@ namespace SQL_App1
 
             string[] chatIds = chatIdsList.ToArray();
             var menu = MenuManager.Menu(chatIds, menuTitle);
-            IQueryable<accounts> id = from a in db.accounts
-                where a.username == menu.choice
+            IQueryable<chats> id = from a in db.chats
+                where a.Id.ToString() == menu.choice
                 select a;
             return id.ToList().FirstOrDefault().Id;
         }

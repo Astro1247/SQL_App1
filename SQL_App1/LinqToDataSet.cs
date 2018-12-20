@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SQL_App1
@@ -35,7 +36,7 @@ namespace SQL_App1
                         DeclarativeLinq(ds);
                         break;
                     case 1:
-                        OopLinq();
+                        OopLinq(ds);
                         break;
                 }
 
@@ -50,7 +51,7 @@ namespace SQL_App1
             DataTable Messages = ds.Tables["messages"];
             DataTable keys = ds.Tables["Keys"];
             var MainMenu = MenuManager.Menu(new string[] {"Usual query", "Group by", "Union", "Sort", "Exit"},
-                "LINQ in OOP style menu");
+                "LINQ in declarative style menu");
             while (MainMenu.choice != "Exit")
             {
                 switch (MainMenu.choice_id)
@@ -138,9 +139,69 @@ namespace SQL_App1
             }
         }
 
-        private static void OopLinq()
+        private static void OopLinq(DataSet ds)
         {
+            DataTable Accounts = ds.Tables["accounts"];
+            DataTable Chats = ds.Tables["chats"];
+            DataTable Messages = ds.Tables["messages"];
+            DataTable keys = ds.Tables["Keys"];
+            var MainMenu = MenuManager.Menu(new string[] {"Average", "Min and Max", "Count", "Subquery", "Exit"},
+                "LINQ in OOP style menu");
+            while (MainMenu.choice != "Exit")
+            {
+                switch (MainMenu.choice_id)
+                {
+                    case 0:
+                        Average(Accounts);
+                        break;
+                    case 1:
+                        MinMax(Accounts);
+                        break;
+                    case 2:
+                        Count(Accounts);
+                        break;
+                    case 3:
+                        SubQuery(Accounts, keys);
+                        break;
 
+                }
+
+                Console.ReadKey(true);
+                MenuManager.Menu(MainMenu);
+            }
+        }
+
+        public static void SubQuery(DataTable accs, DataTable keys)
+        {
+            var result = from acs in accs.AsEnumerable()
+                let result2 = from kys in keys.AsEnumerable()
+                    where kys.Field<int>("ownerId") == 2
+                    select kys.Field<int>("ownerId")
+                where result2.Contains(acs.Field<int>("Id"))
+                select acs;
+
+            DispTable(result);
+        }
+
+        public static void Count(DataTable accounts)
+        {
+            int count = (from a in accounts.AsEnumerable() select a.Field<int>("Id")).Count();
+            Console.WriteLine("Registered users count: {0}", count);
+        }
+
+        public static void MinMax(DataTable accounts)
+        {
+            // DataTable Assort1 = ds.Tables["Ассортимент"];
+            var MinUserId = (from a in accounts.AsEnumerable() select a.Field<Int32>("Id")).Min();
+            var MaxUserId = (from a in accounts.AsEnumerable() select a.Field<Int32>("Id")).Max();
+            Console.WriteLine("Min user Id: ={0}\r\n" +
+                              "Max user Id: {1}", MinUserId, MaxUserId);
+        }
+
+        public static void Average(DataTable accounts)
+        {
+            var averageUsersId = (from prod in accounts.AsEnumerable() select prod.Field<Int32>("Id")).Average();
+            Console.WriteLine(averageUsersId + $" (Rounded: {Math.Round(averageUsersId)})");
         }
 
         public static DataSet FillDs(DataSet ds)
