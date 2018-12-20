@@ -13,7 +13,7 @@ namespace SQL_App1
             var mc = new MenuChoice();
             mc.choices = choices;
             Console.Clear();
-            for (int i = 0; i < choices.Length+1; i++)
+            for (int i = 0; i < choices.Length + 1; i++)
             {
                 Console.Write("\r\n");
             }
@@ -47,11 +47,112 @@ namespace SQL_App1
             mc.choice_id = menu.SelectedIndex;
             mc.choice = menu.SelectedOption;
             mc.used = true;
+            mc.title = title;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
             //Console.ReadKey();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
+            //return menu.SelectedOption;
+            return mc;
+        }
+
+        public static MenuChoice Menu(MenuChoice mc)
+        {
+            Console.Clear();
+            for (int i = 0; i < mc.choices.Length + 1; i++)
+            {
+                Console.Write("\r\n");
+            }
+            Console.WriteLine(mc.title.DrawInConsoleBox());
+            //var menu = new Menu(new string[] { "John", "Bill", "Janusz", "Grażyna", "1500", ":)" });
+            var menu = new MenuClass(mc.choices);
+            var menuPainter = new ConsoleMenuPainter(menu);
+
+            var done = false;
+
+            do
+            {
+                menuPainter.Paint(0, 0);
+
+                var keyInfo = Console.ReadKey();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        menu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menu.MoveDown();
+                        break;
+                    case ConsoleKey.Enter:
+                        done = true;
+                        break;
+                }
+            } while (!done);
+
+            mc.choice_id = menu.SelectedIndex;
+            mc.choice = menu.SelectedOption;
+            mc.used = true;
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
+            //Console.ReadKey();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
+            //return menu.SelectedOption;
+            return mc;
+        }
+
+        public static MenuChoice Menu(MenuChoice mc, string title)
+        {
+            Console.Clear();
+            for (int i = 0; i < mc.choices.Length + 1; i++)
+            {
+                Console.Write("\r\n");
+            }
+            mc.title = title;
+            Console.WriteLine(mc.title.DrawInConsoleBox());
+            //var menu = new Menu(new string[] { "John", "Bill", "Janusz", "Grażyna", "1500", ":)" });
+            var menu = new MenuClass(mc.choices);
+            var menuPainter = new ConsoleMenuPainter(menu);
+
+            var done = false;
+
+            do
+            {
+                menuPainter.Paint(0, 0);
+
+                var keyInfo = Console.ReadKey();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        menu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menu.MoveDown();
+                        break;
+                    case ConsoleKey.Enter:
+                        done = true;
+                        break;
+                }
+            } while (!done);
+
+            mc.choice_id = menu.SelectedIndex;
+            mc.choice = menu.SelectedOption;
+            mc.used = true;
             
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
+            //Console.ReadKey();
+
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
@@ -119,6 +220,7 @@ namespace SQL_App1
     {
         public string[] choices;
         public string choice;
+        public string title = "";
         public int choice_id = -1;
         public bool used = false;
     }

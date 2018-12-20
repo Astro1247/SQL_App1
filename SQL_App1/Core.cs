@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic.Devices;
 
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -40,17 +42,30 @@ namespace SQL_App1
 
         static void Main(string[] args)
         {
+            SqlConnection conn = new SqlConnection();
+
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
+
+            conn.Open();
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+
             switch (MenuManager.Menu(new string[] { "SQL management", "LINQ management" }).choice_id)
             {
                 case 0:
                     Sql.Init();
+                    break;
+                case 1:
+                    LinqToSql.Init();
+                    break;
+                default:
                     break;
             }
 
             
 
             //Crit();
-            LinqToSql linq = new LinqToSql();
+            //LinqToSql linq = new LinqToSql();
             //linq.Init();
         }
 

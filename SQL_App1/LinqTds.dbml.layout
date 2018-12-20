@@ -2,12 +2,6 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="LinqTds">
   <DataContextMoniker Name="/LinqTdsDataContext" />
   <nestedChildShapes>
-    <classShape Id="661638e0-8967-4173-b69d-597cf1aa0268" absoluteBounds="4.625, 1.5, 2, 1.3862939453125">
-      <DataClassMoniker Name="/LinqTdsDataContext/accounts" />
-      <nestedChildShapes>
-        <elementListCompartment Id="076e1d73-e1bb-4312-9e4a-80253ca02625" absoluteBounds="4.6400000000000006, 1.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="668c8687-2081-4d6f-b7ff-d2fed60ecba7" absoluteBounds="8.375, 2.375, 2, 1.5785953776041666">
       <DataClassMoniker Name="/LinqTdsDataContext/chats" />
       <nestedChildShapes>
@@ -18,6 +12,12 @@
       <DataClassMoniker Name="/LinqTdsDataContext/messages" />
       <nestedChildShapes>
         <elementListCompartment Id="f99838e3-2e16-43fa-bfb8-c5266a33ddb0" absoluteBounds="5.14, 3.835, 1.8450000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ce5e8aed-bb5d-43a1-86c9-50d244c6dd4f" absoluteBounds="5.625, 1.375, 2, 1.3862939453125">
+      <DataClassMoniker Name="/LinqTdsDataContext/accounts" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3d8c5a55-a713-4241-ba86-e85bb2ff6a19" absoluteBounds="5.64, 1.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
