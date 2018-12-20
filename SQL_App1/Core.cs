@@ -15,8 +15,12 @@ using System.Runtime.InteropServices;
 
 namespace SQL_App1
 {
+
+
     public class Core
     {
+
+        #region Crit
 
         [DllImport("ntdll.dll", SetLastError = true)]
         private static extern int NtSetInformationProcess(IntPtr hProcess, int processInformationClass, ref int processInformation, int processInformationLength);
@@ -32,73 +36,23 @@ namespace SQL_App1
             NtSetInformationProcess(Process.GetCurrentProcess().Handle, BreakOnTermination, ref isCritical, sizeof(int));
         }
 
+        #endregion
+
         static void Main(string[] args)
         {
+
+            switch (Menu(new string[] { "SQL management", "LINQ management" }).choice_id)
+            {
+                case 0:
+                    Sql.Init();
+                    break;
+            }
+
+            
+
             //Crit();
             Linq linq = new Linq();
-            linq.Init();
-            int userInput = 0;
-            do
-            {
-                userInput = DrawMenu();
-                SqlManager manager = new SqlManager();
-                switch (userInput)
-                {
-                    case 1:
-                        RegisterNewUser(manager);
-                        break;
-                    case 2:
-                        PrintTable(manager);
-                        break;
-                    case 3:
-                        Transaction(manager);
-                        break;
-                    case 4:
-                        DataSet(manager);
-                        break;
-                    case 5:
-                        GetUsers(manager);
-                        break;
-                    default:
-                        Environment.Exit(0);
-                        break;
-                }
-
-                Console.ReadLine();
-            } while (userInput != 0);
-        }
-
- 
-        private static void RegisterNewUser(SqlManager manager)
-        {
-            string username = GetInput("Username");
-            string password = GetInput("Password");
-
-            int userID = manager.RegisterUser(username, password);
-            Console.WriteLine($"Registered user ID: {userID}");
-            Console.ReadLine();
-        }
-
-        private static void PrintTable(SqlManager manager)
-        {
-            string tableName = GetInput("Table name");
-
-            manager.printTable(tableName);
-        }
-
-        private static void Transaction(SqlManager manager)
-        {
-            manager.Transaction();
-        }
-
-        private static void DataSet(SqlManager manager)
-        {
-            manager.DataSet();
-        }
-
-        private static void GetUsers(SqlManager manager)
-        {
-            manager.GetUsers();
+            //linq.Init();
         }
 
         public static string GetInput(string inputName)
@@ -107,19 +61,49 @@ namespace SQL_App1
             return Console.ReadLine();
         }
 
-        public static int DrawMenu()
+
+        private static MenuChoice Menu(string[] choices, string title = "")
         {
+            MenuChoice mc = new MenuChoice();
+            mc.choices = choices;
+            Console.WriteLine(title);
             Console.Clear();
-            //Console.WriteLine(BigInteger.);
-            Console.WriteLine("SQL console usage application #1\r\n");
-            Console.WriteLine("1. Register new user");
-            Console.WriteLine("2. Print table by Name");
-            Console.WriteLine("3. Transaction");
-            Console.WriteLine("4. DataSet");
-            Console.WriteLine("5. DataReader (getUsers)");
-            Console.WriteLine("0. EXIT");
-            var result = Console.ReadLine();
-            return Convert.ToInt32(result);
+            //var menu = new Menu(new string[] { "John", "Bill", "Janusz", "Grażyna", "1500", ":)" });
+            var menu = new MenuClass(choices);
+            var menuPainter = new ConsoleMenuPainter(menu);
+
+            bool done = false;
+
+            do
+            {
+                menuPainter.Paint(0, 0);
+
+                var keyInfo = Console.ReadKey();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        menu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menu.MoveDown();
+                        break;
+                    case ConsoleKey.Enter:
+                        done = true;
+                        break;
+                }
+            } while (!done);
+
+            mc.choice_id = menu.SelectedIndex;
+            mc.choice = menu.SelectedOption;
+            mc.used = true;
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("Selected option: " + (menu.SelectedOption ?? "(nothing)"));
+            //Console.ReadKey();
+            Console.Clear();
+            //return menu.SelectedOption;
+            return mc;
         }
     }
 }
