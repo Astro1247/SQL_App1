@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,13 @@ using System.Threading.Tasks;
 
 namespace SQL_App1
 {
-    public class Linq
+    public class LinqToSql : DataContext
     {
+        public LinqToSql(string connectionString) : base(connectionString)
+        {
+            // this.dataSet = new DataSetLoader();
+        }
+        private static LinqTdsDataContext db = new LinqTdsDataContext();
         private static readonly string ConnString = ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
 
         public DataSet ds = new DataSet();

@@ -50,7 +50,7 @@ namespace SQL_App1
             
 
             //Crit();
-            Linq linq = new Linq();
+            LinqToSql linq = new LinqToSql();
             //linq.Init();
         }
 

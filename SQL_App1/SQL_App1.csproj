@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
-    <Compile Include="Linq.cs" />
+    <Compile Include="LinqToSql.cs" />
     <Compile Include="LinqTds.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
