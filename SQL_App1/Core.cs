@@ -50,7 +50,7 @@ namespace SQL_App1
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
-            switch (MenuManager.Menu(new string[] { "SQL management", "LINQ to SQL management", "LINQ to DataSet management" }).choice_id)
+            switch (MenuManager.Menu(new string[] { "SQL management", "LINQ to SQL management", "LINQ to DataSet management", "CodeFirst" }).choice_id)
             {
                 case 0:
                     Sql.Init();
@@ -62,6 +62,8 @@ namespace SQL_App1
                     LinqToDataSet.Init();
                     break;
                 default:
+                    Console.Clear();
+                    Console.WriteLine("Non implemented yet.");
                     break;
             }
 
