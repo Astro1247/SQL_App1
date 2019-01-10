@@ -62,8 +62,7 @@ namespace SQL_App1
                     LinqToDataSet.Init();
                     break;
                 default:
-                    Console.Clear();
-                    Console.WriteLine("Non implemented yet.");
+                    new CodeFirst().Init();
                     break;
             }
 
