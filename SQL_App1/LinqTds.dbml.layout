@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.875, 8.5" name="LinqTds">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="LinqTds">
   <DataContextMoniker Name="/LinqTdsDataContext" />
   <nestedChildShapes>
-    <classShape Id="740b2647-59fe-466a-b834-ae9bea5e8a3a" absoluteBounds="6.125, 4, 2, 1.5785953776041666">
+    <classShape Id="740b2647-59fe-466a-b834-ae9bea5e8a3a" absoluteBounds="5.25, 3.125, 2, 1.5785953776041666">
       <DataClassMoniker Name="/LinqTdsDataContext/messages" />
       <nestedChildShapes>
-        <elementListCompartment Id="5ee2b55c-b209-4fd7-b7be-b4506cbd1ca0" absoluteBounds="6.14, 4.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="5ee2b55c-b209-4fd7-b7be-b4506cbd1ca0" absoluteBounds="5.265, 3.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="4e543e5b-2ad0-4dc3-8bb1-97e9ae54b1e4" absoluteBounds="4.375, 2, 2, 1.3862939453125">
+    <classShape Id="4e543e5b-2ad0-4dc3-8bb1-97e9ae54b1e4" absoluteBounds="5.25, 1.375, 2, 1.3862939453125">
       <DataClassMoniker Name="/LinqTdsDataContext/Keys" />
       <nestedChildShapes>
-        <elementListCompartment Id="57aea1bd-3fc8-472c-a775-0cfce7272f06" absoluteBounds="4.39, 2.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="57aea1bd-3fc8-472c-a775-0cfce7272f06" absoluteBounds="5.265, 1.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="2fdba47a-09fa-4668-85ad-9521a89db968" absoluteBounds="7.75, 1.375, 2, 1.5785953776041666">
@@ -20,10 +20,10 @@
         <elementListCompartment Id="f3b413af-827e-4b07-b4bb-0494dbdc4558" absoluteBounds="7.765, 1.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="a2d50c27-449c-477a-b407-eeb4207b29b8" absoluteBounds="9.625, 4.125, 2, 1.3862939453125">
+    <classShape Id="a2d50c27-449c-477a-b407-eeb4207b29b8" absoluteBounds="7.75, 3.125, 2, 1.3862939453125">
       <DataClassMoniker Name="/LinqTdsDataContext/accounts" />
       <nestedChildShapes>
-        <elementListCompartment Id="765fc8ba-08a3-4cc2-a92d-1d0b1266322f" absoluteBounds="9.64, 4.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="765fc8ba-08a3-4cc2-a92d-1d0b1266322f" absoluteBounds="7.7650000000000006, 3.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
