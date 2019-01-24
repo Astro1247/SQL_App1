@@ -171,15 +171,21 @@ namespace SQL_App1
             }
         }
 
+        //        public static void SubQuery(DataTable accs, DataTable keys)
+        //        {
+        //            var result = from acs in accs.AsEnumerable()
+        //                let result2 = from kys in keys.AsEnumerable()
+        //                    where kys.Field<int>("ownerId") == 2
+        //                    select kys.Field<int>("ownerId")
+        //                where result2.Contains(acs.Field<int>("Id"))
+        //                select acs;
+        //
+        //            DispTable(result);
+        //        }
+
         public static void SubQuery(DataTable accs, DataTable keys)
         {
-            var result = from acs in accs.AsEnumerable()
-                let result2 = from kys in keys.AsEnumerable()
-                    where kys.Field<int>("ownerId") == 2
-                    select kys.Field<int>("ownerId")
-                where result2.Contains(acs.Field<int>("Id"))
-                select acs;
-
+            var result = accs.AsEnumerable().Where(a => keys.AsEnumerable().Where(k => k.Field<int>("ownerId") == 2).Select(l => l.Field<int>("ownerId")).Contains(a.Field<int>("Id")));
             DispTable(result);
         }
 

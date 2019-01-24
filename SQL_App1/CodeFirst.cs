@@ -17,7 +17,10 @@ namespace SQL_App1
                 //MenuChoice CodeFirstMenu = new MenuChoice();
                 //MenuChoice MainMenu = MenuManager.Menu(new string[] { "Create new chat", "Print \"accounts\" table", "Transaction", "Exit" }, "Messenger example usage Linq to Sql");
                 MenuChoice CodeFirstMenu = MenuManager.Menu(new string[]
-                    {"Register user", "Get users", "Edit user", "Delete user", "Add key", "Связанная загрузка", "Sim", "Sim2", "Sim3"});
+                {
+                    "Register user", "Get users", "Edit user", "Delete user", "Add key", "Связанная загрузка", "Sim",
+                    "Sim2", "Sim3"
+                });
                 while (CodeFirstMenu.choice != "Exit")
                 {
                     switch (CodeFirstMenu.choice)
@@ -50,7 +53,10 @@ namespace SQL_App1
                         {
                             MenuChoice LoadMenu =
                                 MenuManager.Menu(new string[]
-                                    {"Отложенная загрузка", "Прямая загрузка", "Явная загрузка", "Выйти"});
+                                {
+                                    "Отложенная загрузка (LazyLoad)", "Прямая загрузка (EagerLoading)",
+                                    "Явная загрузка (ExplicitLoading)", "Add new key method", "Выйти"
+                                });
                             while (LoadMenu.choice != "Выйти")
                             {
                                 switch (LoadMenu.choice_id)
@@ -59,16 +65,24 @@ namespace SQL_App1
                                         LazyLoading(cntx);
                                         break;
                                     case 1:
-                                        //EagerLoading();
+                                        EagerLoading(cntx);
+                                        Console.WriteLine(
+                                            "Press 'y' to Count keys for each user, any other key to cancel"
+                                                .DrawInConsoleBox());
+                                        var key = Console.ReadKey(true);
+                                        if (key.KeyChar == char.Parse("y"))
+                                            EagerLoading_KeysCount(cntx);
                                         break;
                                     case 2:
-                                        //ExplicitLoading();
+                                        ExplicitLoading(cntx);
                                         break;
                                     case 3:
+                                        //AddNewKey_method(cntx);
+                                        testUpdate(cntx);
                                         break;
                                 }
-                                    Console.ReadKey(true);
-                                    MenuManager.Menu(LoadMenu);
+                                Console.ReadKey(true);
+                                MenuManager.Menu(LoadMenu);
                             }
                         }
                             break;
@@ -94,13 +108,17 @@ namespace SQL_App1
         private void SimpleMethodTwo(BaseContext cntx)
         {
             foreach (var options in cntx.ChatOptions)
-                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15}", options.Id, options.IsHidden, options.AnnounceOnly, options.InviteOnly);
+                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15}", options.Id, options.IsHidden, options.AnnounceOnly,
+                    options.InviteOnly);
             Console.WriteLine("\r\n   <<==========>>  \r\n");
             foreach (var conf in cntx.ConferenceOptions)
-                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15} \t{4,15} \t{5,15}", conf.Id, conf.IsHidden, conf.AnnounceOnly, conf.InviteOnly, conf.NotifyOnMemberJoin, conf.Period);
+                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15} \t{4,15} \t{5,15}", conf.Id, conf.IsHidden,
+                    conf.AnnounceOnly, conf.InviteOnly, conf.NotifyOnMemberJoin, conf.Period);
             Console.WriteLine("\r\n   <<==========>>  \r\n");
             foreach (var adm in cntx.AdminOptions)
-                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15} \t{4,15} \t{5,15} \t{6,15} \t{7,15}", adm.Id, adm.IsHidden, adm.AnnounceOnly, adm.InviteOnly, adm.AdminAllRights, adm.MaxAdminCount, adm.NotifyOnMemberJoin, adm.Period);
+                Console.WriteLine("{0,3} \t{1,5} \t{2,15} \t{3,15} \t{4,15} \t{5,15} \t{6,15} \t{7,15}", adm.Id,
+                    adm.IsHidden, adm.AnnounceOnly, adm.InviteOnly, adm.AdminAllRights, adm.MaxAdminCount,
+                    adm.NotifyOnMemberJoin, adm.Period);
             Console.WriteLine("\r\n   <<==========>>  \r\n");
         }
 
@@ -108,11 +126,29 @@ namespace SQL_App1
         {
             //cntx.Chats.Add(new Chats() {Creator = 5, Messages = new List<Messages>(), member = 7});
             cntx.ChatOptions.Add(new ChatOptions() {AnnounceOnly = true, InviteOnly = false, IsHidden = true});
-            cntx.ConferenceOptions.Add(new AdminOptions() {AnnounceOnly = true, InviteOnly = true, IsHidden = false, AdminAllRights = true, MaxAdminCount = 1, NotifyOnMemberJoin = true, Period = 10});
-            cntx.AdminOptions.Add(new AdminOptions() {AdminAllRights = true, InviteOnly = false, MaxAdminCount = 2, NotifyOnMemberJoin = false, Period = 50, AnnounceOnly = false, IsHidden = false});
+            cntx.ConferenceOptions.Add(new AdminOptions()
+            {
+                AnnounceOnly = true,
+                InviteOnly = true,
+                IsHidden = false,
+                AdminAllRights = true,
+                MaxAdminCount = 1,
+                NotifyOnMemberJoin = true,
+                Period = 10
+            });
+            cntx.AdminOptions.Add(new AdminOptions()
+            {
+                AdminAllRights = true,
+                InviteOnly = false,
+                MaxAdminCount = 2,
+                NotifyOnMemberJoin = false,
+                Period = 50,
+                AnnounceOnly = false,
+                IsHidden = false
+            });
             cntx.SaveChanges();
 
-            
+
         }
 
         private void AddKeyForUser(BaseContext cntx)
@@ -127,11 +163,12 @@ namespace SQL_App1
             users.Values.CopyTo(usernames, 0);
             MenuChoice usersMenuChoice = MenuManager.Menu(usernames, "Choose key owner for creating a new key");
             var user = (from e in cntx.Users
-                        where e.Username == usersMenuChoice.choice
-                        orderby e.Id ascending
-                        select e).FirstOrDefault();
+                where e.Username == usersMenuChoice.choice
+                orderby e.Id ascending
+                select e).FirstOrDefault();
 
-            MenuChoice KeygenMenu = MenuManager.Menu(new string[] {"Generate", "Manual input", "Exit"}, $"Key generating menu for user: {usersMenuChoice.choice}");
+            MenuChoice KeygenMenu = MenuManager.Menu(new string[] {"Generate", "Manual input", "Exit"},
+                $"Key generating menu for user: {usersMenuChoice.choice}");
 
             while (KeygenMenu.choice != "Exit")
             {
@@ -151,11 +188,12 @@ namespace SQL_App1
         }
 
         private static Random random = new Random();
+
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         private string GenerateKey()
@@ -165,17 +203,22 @@ namespace SQL_App1
 
         private void AddNewKey(Users user, string generateKey, BaseContext cntx)
         {
-            DataModel.Keys key = new DataModel.Keys() {Key = generateKey, OwnerId = user.Id, User = new List<Users>() {user} };
+            DataModel.Keys key = new DataModel.Keys()
+            {
+                Key = generateKey,
+                OwnerId = user.Id,
+                User = new List<Users>() {user}
+            };
             var query = (from e in cntx.Users
-                         where e.Username == user.Username
-                         orderby e.Id ascending
-                         select e).FirstOrDefault();
-            
+                where e.Username == user.Username
+                orderby e.Id ascending
+                select e).FirstOrDefault();
+
             cntx.Keys.Add(key);
             var queryKey = (from e in cntx.Keys
-                            where e.Key == key.Key
-                            orderby e.Id ascending
-                            select e).FirstOrDefault();
+                where e.Key == key.Key
+                orderby e.Id ascending
+                select e).FirstOrDefault();
             //query.Keys.Add(queryKey);
             DataModel.Keys[] arrk = new DataModel.Keys[query.Keys.Count];
             query.Keys.CopyTo(arrk, 0);
@@ -201,9 +244,9 @@ namespace SQL_App1
             MenuChoice usersMenuChoice = MenuManager.Menu(usernames, "Choose user to load");
 
             var user = (from e in cntx.Users
-                         where e.Username == usersMenuChoice.choice
-                         orderby e.Id ascending
-                         select e).FirstOrDefault();
+                where e.Username == usersMenuChoice.choice
+                orderby e.Id ascending
+                select e).FirstOrDefault();
 
             // Попытаться загрузить связанные с ним ключи
             if (user != null && user.Keys != null)
@@ -220,6 +263,119 @@ namespace SQL_App1
             //                    Console.WriteLine("Key: " + key.Key);
 
         }
+
+        public static void EagerLoading(BaseContext cntx)
+        {
+            // Загрузить всех пользователей
+            List<DataModel.Users> users = cntx.Users
+                .ToList(); // запрос к базе
+
+            try
+            {
+
+
+                // Получить все их ключи
+                List<DataModel.Keys> keys = users.SelectMany(c => c.Keys)
+                    // Запрос к базе данных не выполняется,
+                    // т.к. данные уже были извлечены 
+                    // ранее с помощью прямой загрузки
+                    .ToList();
+            }
+            catch (Exception) { }
+
+            foreach (var user in users)
+            {
+                if (user.Keys.Count < 1) break;
+                Console.WriteLine($"\nКлючи пользователя {user.Username}: \n");
+
+                Console.WriteLine("\t\tID KEY");
+                foreach (var key in user.Keys)
+                    Console.WriteLine($"\t\t{key.Id} {key.Key}");
+            }
+
+        }
+
+        public static void EagerLoading_KeysCount(BaseContext cntx)
+        {
+            var users = cntx.Users;
+                //загружаем все необходимые связанные данные для дальнейшей работы
+            foreach (var u in users)
+            {
+                var keysCount = u.Keys.Select(k => k.Key).Count();
+                Console.WriteLine($"{u.Username} has {keysCount} keys");
+            }
+        }
+
+        public static void ExplicitLoading(BaseContext cntx)
+        {
+            // Загрузить одного пользователя
+            Dictionary<int, string> users = new Dictionary<int, string>();
+            foreach (Users cntxUser in cntx.Users)
+            {
+                users.Add(cntxUser.Id, cntxUser.Username);
+            }
+
+            string[] usernames = new string[users.Values.Count];
+            users.Values.CopyTo(usernames, 0);
+            MenuChoice usersMenuChoice = MenuManager.Menu(usernames, "Choose user to load");
+
+            var user = (from e in cntx.Users
+                        where e.Username == usersMenuChoice.choice
+                        orderby e.Id ascending
+                        select e).FirstOrDefault();
+
+            // Загрузить связанные с ним ключи с помощью явной загрузки
+            cntx.Entry(user)
+                    .Collection(c => c.Keys)
+                    .Load();
+
+            Console.WriteLine($"Keys for user {user.Username}".DrawInConsoleBox() + "\r\n");
+            if (user != null && user.Keys.Count >= 1)
+                foreach (var key in user.Keys)
+                    if (key.OwnerId == user.Id)
+                        Console.WriteLine($"Key: {key.Key}");
+        }
+
+        public static void testUpdate(BaseContext cntx)
+        {
+            var user = cntx.Users.Where(x => x.Id == 3).FirstOrDefault();
+            var key = cntx.Keys.Where(x => x.Id == 4).FirstOrDefault();
+            key.User = new List<Users>();
+            key.User.Add(user);
+            cntx.SaveChanges();
+            EagerLoading(cntx);
+        }
+
+        public static void deleteKey(BaseContext cntx)
+        {
+            var key = cntx.Keys.Where(x => x.Id == 4).FirstOrDefault();
+            cntx.Entry(key).Collection(x => x.User).Load();
+            if (key != null)
+            {
+                cntx.Keys.Remove(key);
+                cntx.SaveChanges();
+            }
+            else
+                Console.WriteLine("Not found");
+        }
+
+
+
+        public static void AddNewKey_method(BaseContext cntx)
+        {
+            Users user = cntx.Users.Where(x => x.Id == 3).FirstOrDefault();
+            DataModel.Keys key = new DataModel.Keys()
+            {
+                Key = RandomString(16),
+                OwnerId = 3,
+                User = new List<Users>()
+            };
+            key.User.Add(user);
+            cntx.Keys.Add(key);
+            cntx.SaveChanges();
+            EagerLoading(cntx);
+        }
+
 
         private void EditUser(BaseContext cntx)
         {
